@@ -1,4 +1,4 @@
-# Clean Architecture Solution Template For Microservice
+# Clean Architecture Solution For Microservice
 
 ## Technologies
 
