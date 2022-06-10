@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <PackageVersion>1.0.5</PackageVersion>
+	  <Version>1.0.5</Version>
+	  <Authors>Mousavi</Authors>
+	  <Company>HumanResource</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Framework.Application\HumanResource.Framework.Application.csproj" />
+    <ProjectReference Include="..\Framework.Common\HumanResource.Framework.Common.csproj" />
+    <ProjectReference Include="..\Framework.Core\HumanResource.Framework.Core.csproj" />
+  </ItemGroup>
+
+</Project>
