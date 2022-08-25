@@ -3,35 +3,34 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HumanResource.Framework.Core.MediatorPipelines
+namespace HumanResource.Framework.Core.MediatorPipelines;
+
+public class TransactionPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-    public class TransactionPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    private readonly IUnitOfWork _unitOfWork;
+
+    public TransactionPipelineBehavior(IUnitOfWork unitOfWork)
     {
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+    }
 
-        public TransactionPipelineBehavior(IUnitOfWork unitOfWork)
+    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    {
+        try
         {
-            _unitOfWork = unitOfWork;
+            await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
+            var response = await next();
+
+            await _unitOfWork.CommitAsync(cancellationToken);
+
+            return response;
+
         }
-
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        catch (Exception)
         {
-            try
-            {
-                await _unitOfWork.BeginTransactionAsync(cancellationToken);
-
-                var response = await next();
-
-                await _unitOfWork.CommitAsync(cancellationToken);
-
-                return response;
-
-            }
-            catch (Exception)
-            {
-                await _unitOfWork.RollBackAsync(cancellationToken);
-                throw;
-            }
+            await _unitOfWork.RollBackAsync(cancellationToken);
+            throw;
         }
     }
 }

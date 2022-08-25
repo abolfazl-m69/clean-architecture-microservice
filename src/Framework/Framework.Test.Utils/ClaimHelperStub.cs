@@ -5,11 +5,11 @@ namespace HumanResource.Framework.Test.Utils
 {
     public class ClaimHelperStub : IClaimHelper
     {
-        public string GetUserName() => "John@22";
+        public string GetUserName() => "abolfazl@mousavi";
 
-        public string GetFirstName() => "John";
+        public string GetFirstName() => "abolfazl";
 
-        public string GetLastName() => "Lando";
+        public string GetLastName() => "mousavi";
 
         public long GetUserId() => 10;
 

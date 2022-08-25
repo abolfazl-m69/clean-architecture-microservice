@@ -34,15 +34,19 @@ namespace HumanResource.Framework.Common.Service.File
 
             var responseString = await response.Content.ReadAsStringAsync();
 
-            return responseString != null ? _siteSettings.FileServiceUrl + responseString : string.Empty;
+            return _siteSettings.FileServiceUrl + responseString;
         }
 
         public async Task<string> GetDocumentUrl(Guid fileId, CancellationToken cancellationToken)
         {
             var token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
 
-            var client = new RestClient($"{_siteSettings.FileServiceUrl}api/document/downloadFromPath/{fileId}") { Timeout = -1 };
-            var request = new RestRequest(Method.GET);
+            var client = new RestClient($"{_siteSettings.FileServiceUrl}api/document/downloadFromPath/{fileId}") { };
+            var request = new RestRequest
+            {
+                Method = Method.Get,
+                Timeout = 10000
+            };
             request.AddHeader("Authorization", token);
             var result = await client.ExecuteAsync(request, cancellationToken);
             if (result.StatusCode == HttpStatusCode.OK)
@@ -78,8 +82,8 @@ namespace HumanResource.Framework.Common.Service.File
         {
             token = token == null ? _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString() : $"Bearer {token}";
 
-            var client = new RestClient($"{_siteSettings.FileServiceUrl}api/Picture/Delete/{fileId}") { Timeout = 10000 };
-            var request = new RestRequest(Method.DELETE);
+            var client = new RestClient($"{_siteSettings.FileServiceUrl}api/Picture/Delete/{fileId}");
+            var request = new RestRequest{Method = Method.Delete, Timeout = 10000 };
             request.AddHeader("Authorization", token);
             var result = await client.ExecuteAsync(request, cancellationToken);
             return result.StatusCode == HttpStatusCode.OK;
@@ -89,8 +93,8 @@ namespace HumanResource.Framework.Common.Service.File
         {
             token = token == null ? _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString() : $"Bearer {token}";
 
-            var client = new RestClient($"{_siteSettings.FileServiceUrl}api/Document/Delete/{fileId}") { Timeout = 10000 };
-            var request = new RestRequest(Method.DELETE);
+            var client = new RestClient($"{_siteSettings.FileServiceUrl}api/Document/Delete/{fileId}") ;
+            var request = new RestRequest { Method = Method.Delete,Timeout = 10000};
             request.AddHeader("Authorization", token);
             var result = await client.ExecuteAsync(request, cancellationToken);
             return result.StatusCode == HttpStatusCode.OK;
@@ -117,9 +121,9 @@ namespace HumanResource.Framework.Common.Service.File
 
             var response = await client.PostAsync("api/picture/upload", content, cancellationToken);
 
-            var responseString = await response.Content.ReadAsStringAsync();
+            var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
 
-            return responseString != null ? JsonConvert.DeserializeObject<Guid>(responseString) : Guid.Empty;
+            return JsonConvert.DeserializeObject<Guid>(responseString);
         }
 
         private async Task<Guid> UploadDocument(IFormFile document, CancellationToken cancellationToken, string token = null)
@@ -143,9 +147,9 @@ namespace HumanResource.Framework.Common.Service.File
 
             var response = await client.PostAsync("api/document/upload", content, cancellationToken);
 
-            var responseString = await response.Content.ReadAsStringAsync();
+            var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
 
-            return responseString != null ? JsonConvert.DeserializeObject<Guid>(responseString) : Guid.Empty;
+            return JsonConvert.DeserializeObject<Guid>(responseString);
         }
     }
 }
