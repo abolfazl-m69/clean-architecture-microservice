@@ -7,4 +7,8 @@
    * MediatR
    * CQRS
    * FluentValidation
-   * XUnit, FluentAssertions
+   * XUnit, FluentAssertions ,TDD
+   * Event Sourcing Outbox Pattern
+   * Masstransit Distributed Application Framework 
+   * RabbitMQ Event Bus
+   * DDD Domain Driven Design
