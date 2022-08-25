@@ -11,7 +11,7 @@ namespace HumanResource.Framework.Common.Service.SMS
 
         public SmsService()
         {
-            _kaveNegarApi = new KavenegarApi("6C506279366D7A765656624E78437658416B6E7648773D3D");
+            _kaveNegarApi = new KavenegarApi("");
         }
 
         public async Task<bool> SendOtpAsync(SmsRequest request)
@@ -27,7 +27,7 @@ namespace HumanResource.Framework.Common.Service.SMS
             try
             {
 
-                var result =await Task.Run(()=> _kaveNegarApi.Send("100074402", request.Destination, request.Body)) ;
+                var result =await Task.Run(()=> _kaveNegarApi.Send("", request.Destination, request.Body)) ;
 
                 return result.Status == 200;
             }

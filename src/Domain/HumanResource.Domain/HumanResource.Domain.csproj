@@ -4,4 +4,10 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Framework.Application\HumanResource.Framework.Application.csproj" />
+    <ProjectReference Include="..\..\Framework\Framework.Domain\HumanResource.Framework.Domain.csproj" />
+    <ProjectReference Include="..\HumanResource.Domain.Shared\HumanResource.Domain.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
